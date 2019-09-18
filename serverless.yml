@@ -25,6 +25,9 @@ provider:
   iamRoleStatements: ${file(config/iamRoleStatements.yml)}
   deploymentBucket:
     name: com.serverless.${self:custom.stage.profile}.${self:provider.region}.deploys
+  environment:
+    MediaConvertRole: "arn:aws:iam::#{AWS::AccountId}:role/${self:service}Role${self:custom.stage.suffix}"
+    outPrefix: ${self:custom.stage.outPrefix}
 functions: ${file(lib/config.js):functions}
 resources:
   Resources: ${file(lib/config.js):resources}

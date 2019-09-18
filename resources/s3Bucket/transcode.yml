@@ -1,0 +1,27 @@
+Type: AWS::S3::Bucket
+Properties:
+  BucketName: ${self:custom.stage.bucket}
+  AccelerateConfiguration:
+    AccelerationStatus: Enabled
+  Tags: ${self:custom.stage.bucketTags}
+  LifecycleConfiguration:
+    Rules:
+      -
+        Id: 'CleanUploads'
+        AbortIncompleteMultipartUpload:
+          DaysAfterInitiation: 1
+        ExpirationInDays: 3
+        Prefix: ${self:custom.stage.inPrefix}/
+        Status: Enabled
+      -
+        Id: 'CleanTranscode'
+        AbortIncompleteMultipartUpload:
+          DaysAfterInitiation: 1
+        ExpirationInDays: 14
+        Prefix: ${self:custom.stage.outPrefix}/
+        Status: Enabled
+  PublicAccessBlockConfiguration:
+    BlockPublicAcls: true
+    BlockPublicPolicy: true
+    IgnorePublicAcls: true
+    RestrictPublicBuckets: true

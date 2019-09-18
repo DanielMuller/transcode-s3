@@ -1,0 +1,10 @@
+handler: services/mediaconvert.handler
+name: ${self:service}-mediaconvert${self:custom.stage.suffix}
+memorySize: ${self:custom.stage.lambda.memorySize}
+timeout: ${self:custom.stage.lambda.timeout}
+events:
+  - s3:
+      bucket: transcode
+      event: s3:ObjectCreated:*
+      rules:
+        - prefix: ${self:custom.stage.inPrefix}/

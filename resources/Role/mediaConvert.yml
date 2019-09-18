@@ -1,0 +1,17 @@
+Type: AWS::IAM::Role
+Properties:
+  RoleName: ${self:service}Role${self:custom.stage.suffix}
+  AssumeRolePolicyDocument:
+    Version: "2012-10-17"
+    Statement:
+      -
+        Effect: "Allow"
+        Principal:
+          Service:
+            - "mediaconvert.amazonaws.com"
+        Action:
+          - "sts:AssumeRole"
+  Description: "Allows MediaConvert service to call S3 APIs and API Gateway on your behalf"
+  ManagedPolicyArns:
+    - arn:aws:iam::aws:policy/AmazonS3FullAccess
+    - arn:aws:iam::aws:policy/AmazonAPIGatewayInvokeFullAccess

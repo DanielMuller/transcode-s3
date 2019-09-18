@@ -1,0 +1,38 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-east-1",
+      "eventTime": "2019-09-17T04:55:00.664Z",
+      "eventName": "ObjectCreated:CompleteMultipartUpload",
+      "userIdentity": {
+        "principalId": "AWS:AROA3I7SCRRDGGZ6H5U44:botocore-session-1568695300"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "1.2.3.4"
+      },
+      "responseElements": {
+        "x-amz-request-id": "B21B6721D8E65692",
+        "x-amz-id-2": "s3qtkKeM/i73xYdFyVYuzXqb8i24fQ8+h//k9dzsVMtOrd/j3BkhfxVJYu1mz6f7wAOwwZnhTls="
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "transcode-transcode-dev-3f65ce9b34f9a6892d4e126fac91c93d",
+        "bucket": {
+          "name": "my-dev-bucket",
+          "ownerIdentity": {
+            "principalId": "AUG10K4T2HFIZ"
+          },
+          "arn": "arn:aws:s3:::my-dev-bucket"
+        },
+        "object": {
+          "key": "auto-dev/test-file.mp4",
+          "size": 114725376,
+          "eTag": "c577afe3b5e564caabf37d6b69a1cb7e-14",
+          "sequencer": "005D8067211D711B5D"
+        }
+      }
+    }
+  ]
+}
