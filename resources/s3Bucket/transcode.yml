@@ -25,3 +25,22 @@ Properties:
     BlockPublicPolicy: true
     IgnorePublicAcls: true
     RestrictPublicBuckets: true
+  CorsConfiguration:
+    CorsRules:
+      - AllowedHeaders:
+          - "*"
+        AllowedMethods:
+          - HEAD
+          - GET
+          - PUT
+          - POST
+          - DELETE
+        AllowedOrigins:
+          - "*"
+        ExposedHeaders:
+          - x-amz-server-side-encryption
+          - x-amz-request-id
+          - x-amz-id-2
+          - ETag
+        Id: BrowserInteraction
+        MaxAge: 3600
