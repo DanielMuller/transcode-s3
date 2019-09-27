@@ -26,11 +26,11 @@ module.exports.handler = async (event) => {
   const ext = path.extname(key)
   const basename = path.basename(key, ext)
   const dirname = path.dirname(key).split('/').slice(1).join('/')
-  const outPrefix = path.join([
+  const outPrefix = path.join(
     process.env.outPrefix,
     dirname,
     basename
-  ])
+  )
   input.FileInput = `s3://${fileInfo.s3.bucket.name}/${key}`
   job.Role = process.env.MediaConvertRole
   job.Settings.Inputs[0] = input
