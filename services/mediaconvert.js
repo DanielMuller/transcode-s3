@@ -22,10 +22,11 @@ module.exports.handler = async (event) => {
   const input = require('../lib/templates/input.json')
   const outputBase = require('../lib/templates/output.json')
 
-  const ext = path.extname(fileInfo.s3.object.key)
-  const basename = path.basename(fileInfo.s3.object.key, ext)
+  const key = decodeURIComponent(fileInfo.s3.object.key)
+  const ext = path.extname(key)
+  const basename = path.basename(key, ext)
 
-  input.FileInput = `s3://${fileInfo.s3.bucket.name}/${fileInfo.s3.object.key}`
+  input.FileInput = `s3://${fileInfo.s3.bucket.name}/${key}`
   job.Role = process.env.MediaConvertRole
   job.Settings.Inputs[0] = input
   job.Settings.OutputGroups[0].OutputGroupSettings.FileGroupSettings.Destination = `s3://${fileInfo.s3.bucket.name}/${process.env.outPrefix}/${basename}/${basename}`
