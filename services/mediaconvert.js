@@ -25,11 +25,16 @@ module.exports.handler = async (event) => {
   const key = decodeURIComponent(fileInfo.s3.object.key)
   const ext = path.extname(key)
   const basename = path.basename(key, ext)
-
+  const dirname = path.dirname(key).split('/').slice(1).join('/')
+  const outPrefix = path.join([
+    process.env.outPrefix,
+    dirname,
+    basename
+  ])
   input.FileInput = `s3://${fileInfo.s3.bucket.name}/${key}`
   job.Role = process.env.MediaConvertRole
   job.Settings.Inputs[0] = input
-  job.Settings.OutputGroups[0].OutputGroupSettings.FileGroupSettings.Destination = `s3://${fileInfo.s3.bucket.name}/${process.env.outPrefix}/${basename}/${basename}`
+  job.Settings.OutputGroups[0].OutputGroupSettings.FileGroupSettings.Destination = `s3://${fileInfo.s3.bucket.name}/${outPrefix}/${basename}`
 
   const outputs = require('../lib/outputs.js')
   outputs.forEach(outputSettings => {
