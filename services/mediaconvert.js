@@ -16,6 +16,8 @@ module.exports.handler = async (event) => {
     return res.Endpoints[0].Url
   })
 
+  log.info('MediaConvert', { endpoint })
+
   AWS.config.mediaconvert = { endpoint: endpoint }
   mc = new AWS.MediaConvert()
   const job = require('../lib/job.js')
