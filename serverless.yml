@@ -1,34 +1,41 @@
 service: transcode
-frameworkVersion: "2"
+frameworkVersion: 3.24.1
+configValidationMode: error
 
 custom:
-  stage: ${file(stages/${opt:stage, self:provider.stage}.yml)}
-  webpack:
-    includeModules:
-      forceExclude:
-        - aws-sdk
+  stage: ${file(config/stages/${opt:stage, self:provider.stage}.yml)}
+  esbuild:
+    packager: 'npm'
+    sourcemap: true
+    minify: true
 
 plugins:
   - serverless-deployment-bucket
-  - serverless-pseudo-parameters
-  - serverless-webpack
+  - serverless-esbuild
 
 package:
   individually: true
 
 provider:
   name: aws
-  runtime: nodejs12.x
-  stage: dev
+  runtime: nodejs16.x
+  stage: ${opt:stage, 'dev'}
   region: ${opt:region, self:custom.stage.region}
   profile: ${self:custom.stage.profile}
-  iamRoleStatements: ${file(config/iamRoleStatements.yml)}
+  memorySize: ${self:custom.stage.lambda.memorySize, '128'}
+  timeout: ${self:custom.stage.lambda.timeout, '10'}
+  logRetentionInDays: ${self:custom.stage.lambda.logRetention, 1}
+  iam: ${file(serverless.iam.yml)}
   deploymentBucket:
-    name: com.serverless.${self:custom.stage.profile}.${self:provider.region}.deploys
+    name: com.serverless.${aws:accountId}.${self:provider.region}.deploys
+    blockPublicAccess: true
+    skipPolicySetup: true
+    serverSideEncryption: AES256
   environment:
-    MediaConvertRole: "arn:aws:iam::#{AWS::AccountId}:role/${self:service}Role${self:custom.stage.suffix}"
+    MediaConvertRole: 'arn:aws:iam::${aws:accountId}:role/${self:service}Role${self:custom.stage.suffix}'
     outPrefix: ${self:custom.stage.outPrefix}
-functions: ${file(lib/config.js):functions}
+    NODE_OPTIONS: '--enable-source-maps'
+functions: ${file(helpers/main.js):getFunctions}
 resources:
-  Resources: ${file(lib/config.js):resources}
-#   Outputs: ${file(lib/config.js):outputs}
+  Resources: ${file(helpers/main.js):getResources}
+#   Outputs: ${file(helpers/main.js):outputs}
