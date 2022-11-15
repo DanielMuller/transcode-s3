@@ -1,4 +1,4 @@
-handler: services/mediaconvert.handler
+handler: src/handlers/mediaconvert.handler
 name: ${self:service}-mediaconvert${self:custom.stage.suffix}
 memorySize: ${self:custom.stage.lambda.memorySize}
 timeout: ${self:custom.stage.lambda.timeout}

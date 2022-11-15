@@ -1,0 +1,11 @@
+role:
+  statements:
+    - Effect: "Allow"
+      Action:
+        - "mediaconvert:DescribeEndpoints"
+        - "mediaconvert:CreateJob"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - iam:PassRole
+      Resource: arn:aws:iam::${aws:accountId}:role/${self:service}Role${self:custom.stage.suffix}
