@@ -2,16 +2,23 @@ Type: AWS::IAM::Role
 Properties:
   RoleName: ${self:service}Role${self:custom.stage.suffix}
   AssumeRolePolicyDocument:
-    Version: "2012-10-17"
+    Version: '2012-10-17'
     Statement:
-      -
-        Effect: "Allow"
+      - Effect: 'Allow'
         Principal:
           Service:
-            - "mediaconvert.amazonaws.com"
+            - 'mediaconvert.amazonaws.com'
         Action:
-          - "sts:AssumeRole"
-  Description: "Allows MediaConvert service to call S3 APIs and API Gateway on your behalf"
-  ManagedPolicyArns:
-    - arn:aws:iam::aws:policy/AmazonS3FullAccess
-    - arn:aws:iam::aws:policy/AmazonAPIGatewayInvokeFullAccess
+          - 'sts:AssumeRole'
+  Description: 'Allows MediaConvert service to call S3 APIs and API Gateway on your behalf'
+  Policies:
+    - PolicyName: mediapipelineS3Access
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:GetObject
+            Resource:
+              - arn:aws:s3:::${self:custom.stage.bucket}/*

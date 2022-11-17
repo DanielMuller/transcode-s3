@@ -8,7 +8,7 @@ const LOCAL_ENV_VARIABLES = {
   outPrefix: process.env.outPrefix,
 }
 
-const main = async (event: S3Event): Promise<string> => {
+const main = async (event: S3Event): Promise<void> => {
   const fileInfo = event.Records[0]
   const logger = new LambdaLog({
     meta: {
@@ -34,6 +34,5 @@ const main = async (event: S3Event): Promise<string> => {
     { logger },
   )
   logger.info('response', { response })
-  return 'string'
 }
 export const handler = main
